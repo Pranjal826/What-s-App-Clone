@@ -1,0 +1,218 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  height: 100vh;
+width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.whatsapp-layout {
+  display: flex;
+  width: 100vw;
+  height: 100%;
+  background: rgb(19, 27, 32);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Sidebar Styles */
+.left-sidebar {
+  width: 30%;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.user-card:hover {
+  background-color: #364739;
+}
+.user-card{
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.user-card img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-details h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Right Sidebar Styles */
+.right-sidebar {
+  width: 70%;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+ 
+}
+/* Apply CSS styles to the search box */
+.Search-user {
+  background-color: rgb(43, 54, 61);
+  padding: 10px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+h2{
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: whitesmoke;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #151c23;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+}
+#search-user{
+  background-color: #151c23;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  color: whitesmoke;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid white;
+  outline: none;
+ 
+}
+#search-btn {
+  background-color: transparent;
+  color: grey;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+hr{
+  border: 1px solid #484242;
+  
+}
+#search-btn i {
+  font-size: 18px;
+  margin-right: 5px;
+}
+
+#search-btn:hover {
+  background-color: #223836;
+}
+
+/* Hide the clear button by default */
+
+
+#chat-heading {
+  text-align: center;
+}
+
+.profile i{
+  font-size: 20px;
+  margin-right: 15px;
+}
+.messages {
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-top: 10px;
+  background: rgb(13, 20, 25);
+
+}
+
+.msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+/* Define the styles for the green and red classes */
+a{
+  text-decoration: none;
+  color: #ccc;
+  margin-right: 10px;
+}
+.incomingMessage {
+  width: 200px;
+  background-color:#89d2ae;
+  color: #0b0b0b;
+  float: left;
+}
+
+.outgoingMessage {
+  width: 200px;
+  background-color:#89d2ae;
+  color: #0b0b0b;
+  align-self: flex-end;
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.data {
+  font-size: 16px;
+}
+
+
+.input {
+  display: flex;
+  margin-top: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#joinRoom {
+  background-color: #28a745;
+}
+
+#joinRoom:hover {
+  background-color: #1e7e34;
+}

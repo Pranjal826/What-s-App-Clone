@@ -1,0 +1,124 @@
+<%- include('./partials/header') %>
+
+<div class="whatsapp-layout">
+  
+  <div class="left-sidebar">
+    <div class="Search-user">
+      <div class="search-box">
+        <input type="text" id="search-user" placeholder="Search a username">
+        <button id="search-btn">
+          <i class="fa fa-search"></i> 
+        </button>
+        <a href="/showprofile" class="profile">
+          <i class="fa-regular fa-user user"></i>
+        </a>
+      <a href="/logout" class="logout">Logout</a>
+
+      </div>
+    </div>
+    
+    <div class="user-list">
+      <% users.forEach(function(user) { %>
+        <div class="user-card" data-user-id="<%= user._id %>">
+          <img src="<%= user.dp %>" alt="">
+          <div class="user-details">
+            <h2><%= user.name %></h2>
+          </div>
+        </div>
+        <hr>
+      <% }); %>
+    </div>
+  </div>
+  <hr>
+  <!-- Right Sidebar: Chat Box -->
+  <div class="right-sidebar">
+    <h1 id="chat-heading">Chat-Dictive </h1>
+
+    <div class="messages">
+
+    </div>
+      <div class="input">
+        <input type="text" id="message-input" placeholder="Enter Message">
+        <button onclick="sendMessage()">Send</button>
+      <button id="joinRoom" onclick="joinRoom()" >Join Room</button>
+
+      </div>
+  </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<!-- ... Your existing HTML code ... -->
+<script>
+// Search user
+const searchBtn = document.querySelector('#search-btn');
+const searchUser = document.querySelector('#search-user');
+const userCards = document.querySelectorAll('.user-card');
+const chatHeading = document.querySelector('#chat-heading');
+const messageInput = document.querySelector('#message-input');
+const joinRoomBtn = document.querySelector('#joinRoom');
+let roomName = '';
+searchBtn.addEventListener('click', () => {
+  const searchQuery = searchUser.value.toLowerCase(); // Convert the search query to lowercase for case-insensitive search
+  userCards.forEach(userCard => {
+    const name = userCard.querySelector('h2').innerText.toLowerCase(); // Convert the user name to lowercase
+    if (name.includes(searchQuery)) {
+      userCard.style.display = 'flex';
+      userCard.nextElementSibling.style.display = 'flex'; // Show the next <hr> element
+    } else {
+      userCard.style.display = 'none';
+      userCard.nextElementSibling.style.display = 'none'; // Hide the next <hr> element
+    }
+  });
+});
+
+const socket = io();
+
+
+function incomingMessage(messagePacket) {
+      document.querySelector('.messages').innerHTML += ` <div class="msg incomingMessage">
+          <div class="username">${messagePacket.username}</div>
+          <div class="data"> ${messagePacket.msg} </div>
+        </div>`
+    }
+
+    function outgoingMessage(msg) {
+      document.querySelector('.messages').innerHTML += ` <div class="msg outgoingMessage">
+          <div class="username">You</div>
+          <div class="data"> ${msg} </div>
+        </div>`
+
+    }
+    const user = '<%- JSON.stringify(currentuser) %>';
+    console.log('User object:', user);
+    
+    function sendMessage() {
+      const curr = user;
+      const currentUserObj = JSON.parse(user);
+    const username = currentUserObj.name;
+    console.log('Username:', username);
+      const msg = document.querySelector('#message-input').value
+      const messagePacket = {
+        username:username,
+        msg: msg,
+        roomName: roomName,
+      }
+      outgoingMessage(msg)
+      socket.emit('sony', messagePacket)
+
+    }
+    socket.on('max', msg => {
+      incomingMessage(msg)
+    })
+
+
+    function joinRoom() {
+      roomName = prompt("Enter room name")
+      console.log(roomName)
+      socket.emit('joinRoom', roomName)
+
+    }
+    // Disconnect
+    socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+    
+});
+</script>

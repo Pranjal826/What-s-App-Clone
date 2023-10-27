@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/show.css"> <!-- Link to your CSS file -->
+    <title>User Profile</title>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Welcome to Chat-Dictive</h1>
+        <div class="profile-header">
+            <img class="profile-picture" src="<%= currentuser.dp %>" alt="Profile Picture">
+            <h1><%= currentuser.name %></h1>
+        </div>
+        <div class="profile-details">
+            <p>Email: <%= currentuser.email %></p>
+            <p>Phone Number: <%= currentuser.phone %></p>
+        </div>
+        <div class="btn">
+            <a href="/"><button>Back</button></a>
+            <a href="/delete">
+              <button>Delete</button>
+            </a>
+      
+        </div>
+       
+    </div>
+
+</body>
+</html>
