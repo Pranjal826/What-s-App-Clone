@@ -43,7 +43,6 @@
       <input type="text" id="message-input" placeholder="Enter Message" class="animate__animated animate__bounceInLeft">
 <button class="button-89" role="button" onclick="sendMessage()">Send</button>
 <button class="button-86" role="button" onclick="joinRoom()">Join Room</button>
-<button class="button-86" role="button" onclick="deleteRoom()">Delete Room</button>
 
         <button class="button-60" role="button" onclick="createRoom()">
           <span></span>
@@ -160,7 +159,6 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     function joinRoom() {
        roomName = prompt('Enter room name');
        password = prompt('Enter password');
-       chatHeading.innerHTML = `You Joined ${roomName}`;
 
       const data = {
         roomName: roomName,
@@ -173,7 +171,6 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     function createRoom() {
        roomName = prompt('Enter room name');
        password = prompt('Enter password');
-       chatHeading.innerHTML = `You Created ${roomName}`;
 
       const data = {
         roomName: roomName,
@@ -186,6 +183,8 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
   
     // Handle server responses
     socket.on('roomCreated', (roomName) => {
+      chatHeading.innerHTML = `You Created ${roomName}`;
+
       alert(`Room '${roomName}' created.`);
     });
     socket.on('roomDeleted', (roomName) => {
@@ -201,6 +200,7 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     });
 
     socket.on('roomJoined', (roomName) => {
+      chatHeading.innerHTML = `You Joined ${roomName}`;
       alert(`Joined room '${roomName}'.`);
     });
 
