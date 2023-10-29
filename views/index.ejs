@@ -19,7 +19,7 @@
 
       <div class="user-list">
         <% users.forEach(function(user) { %>
-          <div class="user-card" data-user-id="<%= user._id %>">
+          <div class="user-card" data-user-id="<%= user._id %>" >
             <img src="<%= user.dp %>" alt="">
             <div class="user-details">
               <h2>
@@ -43,6 +43,7 @@
       <input type="text" id="message-input" placeholder="Enter Message" class="animate__animated animate__bounceInLeft">
 <button class="button-89" role="button" onclick="sendMessage()">Send</button>
 <button class="button-86" role="button" onclick="joinRoom()">Join Room</button>
+<button class="button-86" role="button" onclick="deleteRoom()">Delete Room</button>
 
         <button class="button-60" role="button" onclick="createRoom()">
           <span></span>
@@ -67,41 +68,69 @@
     let roomName = '';
     let password
     searchBtn.addEventListener('click', () => {
-      const searchQuery = searchUser.value.toLowerCase(); // Convert the search query to lowercase for case-insensitive search
+      const searchQuery = searchUser.value.toLowerCase();
       userCards.forEach(userCard => {
-        const name = userCard.querySelector('h2').innerText.toLowerCase(); // Convert the user name to lowercase
+        const name = userCard.querySelector('h2').innerText.toLowerCase();
         if (name.includes(searchQuery)) {
           userCard.style.display = 'flex';
-          userCard.nextElementSibling.style.display = 'flex'; // Show the next <hr> element
+          userCard.nextElementSibling.style.display = 'flex'; 
         } else {
           userCard.style.display = 'none';
-          userCard.nextElementSibling.style.display = 'none'; // Hide the next <hr> element
+          userCard.nextElementSibling.style.display = 'none';
         }
       });
     });
+ 
 
     const socket = io();
 
+// var pvtChatRoom,pvtPass
+//     userCards.forEach(userCard => {
+//   userCard.addEventListener('click', () => {
+//     const selectedUserId = userCard.getAttribute('data-user-id'); 
+//     const current = JSON.parse(user); 
+//     const currentUserId = current._id;
+    
+//     // Generate a consistent room ID by sorting the user IDs.
+//     const roomParticipants = [currentUserId, selectedUserId].sort().join('_');
+//     const roomName = `private_${roomParticipants}`;
+
+//     chatHeading.innerHTML = `Private Chat with ${userCard.querySelector('h2').innerText}`;
+//     password = ''; // You can set a password here if needed.
+//     var pvtRoom = {
+//       roomName: roomName,
+//       password: password
+//     };
+//     pvtChatRoom=pvtRoom.roomName
+//     pvtPass=pvtRoom.password
+//     console.log("Data", pvtChatRoom);
+   
+//   });
+// });
 
     function incomingMessage(messagePacket) {
       document.querySelector('.messages').innerHTML += ` <div class="msg incomingMessage">
           <div class="username">${messagePacket.username}</div>
           <div class="data"> ${messagePacket.msg} </div>
+          <div class="date"> ${messagePacket.time}</div>
         </div>`
     }
-
+    const now = new Date();
+const hours = now.getHours().toString().padStart(2, '0'); // Ensure two digits
+const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digits
     function outgoingMessage(msg) {
       document.querySelector('.messages').innerHTML += ` <div class="msg outgoingMessage">
           <div class="username">You</div>
           <div class="data"> ${msg} </div>
+          <div class="date"> ${hours}:${minutes}</div>
         </div>`
 
     }
     const user = '<%- JSON.stringify(currentuser) %>';
     console.log('User object:', user);
-
+    const curr = user;
+  
     function sendMessage() {
-      const curr = user;
       const currentUserObj = JSON.parse(user);
       const username = currentUserObj.name;
       console.log('Username:', username);
@@ -110,20 +139,28 @@
         username: username,
         msg: msg,
         roomName: roomName,
-        password: password
+        password: password,
+        time:`${hours}:${minutes}`,
+        // pvtChatRoom:pvtChatRoom,
+        // pvtChatPassword:pvtPass
       }
-      outgoingMessage(msg)
+      console.log(messagePacket.roomName)
+      if(curr){
+        outgoingMessage(msg)
       socket.emit('sony', messagePacket)
+      }
 
     }
     socket.on('max', msg => {
       incomingMessage(msg)
     })
+
    
 
     function joinRoom() {
        roomName = prompt('Enter room name');
        password = prompt('Enter password');
+       chatHeading.innerHTML = `You Joined ${roomName}`;
 
       const data = {
         roomName: roomName,
@@ -136,6 +173,7 @@
     function createRoom() {
        roomName = prompt('Enter room name');
        password = prompt('Enter password');
+       chatHeading.innerHTML = `You Created ${roomName}`;
 
       const data = {
         roomName: roomName,
@@ -144,12 +182,16 @@
 
       socket.emit('createRoom', data);
     }
-
+    // Delete current room
+  
     // Handle server responses
     socket.on('roomCreated', (roomName) => {
       alert(`Room '${roomName}' created.`);
     });
-
+    socket.on('roomDeleted', (roomName) => {
+      alert(`Room '${roomName}' deleted.`);
+    });
+  
     socket.on('roomExists', (roomName) => {
       alert(`Room '${roomName}' already exists.`);
     });

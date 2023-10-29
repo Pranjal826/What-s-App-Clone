@@ -3,7 +3,7 @@ const socketapi = {
     io: io
 };
 const rooms = {};
-
+const roomOwners={}
 io.on("connection", function (socket) {
     console.log("A user connected");
 
@@ -13,6 +13,7 @@ io.on("connection", function (socket) {
                 password: data.password,
                 users: [socket.id]
             };
+            
             socket.join(data.roomName);
             socket.emit('roomCreated', data.roomName);
             console.log(`Room '${data.roomName}' created`);
@@ -38,15 +39,19 @@ io.on("connection", function (socket) {
         socket.broadcast.to(msg.roomName).emit('max', msg);
     });
 
+
+    
+    
+    
+    
     socket.on('disconnect', () => {
-        // Remove the user from all rooms they were part of
-        for (const roomName in rooms) {
-            const index = rooms[roomName].users.indexOf(socket.id);
-            if (index !== -1) {
-                rooms[roomName].users.splice(index, 1);
-                socket.leave(roomName);
-            }
+        const roomName = roomOwners[socket.id];
+        if (roomName) {
+            socket.leave(roomName);
         }
+    
+        delete roomOwners[socket.id];
+
         console.log("A user disconnected");
     });
 });

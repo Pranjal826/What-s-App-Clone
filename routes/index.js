@@ -21,7 +21,7 @@ router.get('/', checkAuth,async(req, res) => {
     const loggedInUser = req.session.user;
     const users = await userModel.find({ _id: { $ne: loggedInUser._id } });
     const currentuser = req.session.user;
-    res.render('index', { users ,currentuser: currentuser});
+    res.render('index', { users ,currentuser: currentuser,loggedIn:true});
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching user list.');
