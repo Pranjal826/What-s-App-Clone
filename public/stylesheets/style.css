@@ -17,7 +17,7 @@ body {
   display: flex;
   width: 100vw;
   height: 100%;
-  background: rgb(19, 27, 32);
+  background: rgb(38, 39, 40);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -30,7 +30,8 @@ body {
 }
 
 .user-card:hover {
-  background-color: #364739;
+  background-color: #364547;
+  transition: 0.3s ease all;
 }
 
 .user-card {
@@ -55,7 +56,6 @@ body {
 /* Right Sidebar Styles */
 .right-sidebar {
   width: 70%;
-  padding: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -64,7 +64,7 @@ body {
 
 /* Apply CSS styles to the search box */
 .Search-user {
-  background-color: rgb(43, 54, 61);
+  background: rgb(38, 39, 40);
   padding: 10px;
   text-align: center;
 }
@@ -86,22 +86,22 @@ h2 {
 .search-box {
   display: flex;
   align-items: center;
+  justify-content: space-evenly;
   background-color: #151c23;
   border-radius: 5px;
   overflow: hidden;
   width: 100%;
 }
-
+.time{
+  float: right;
+  color: #ccc;
+}
 #search-user {
   background-color: #151c23;
-  border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
   color: whitesmoke;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: 1px solid white;
+  border: none;
   outline: none;
 
 }
@@ -116,7 +116,9 @@ h2 {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
-
+.messages::-webkit-scrollbar{
+  display: none;
+}
 hr {
   border: 1px solid #484242;
 
@@ -150,7 +152,11 @@ hr {
   flex-direction: column;
   padding: 10px;
   margin-top: 10px;
-  background: rgb(13, 20, 25);
+  background-image: url('https://e1.pxfuel.com/desktop-wallpaper/474/824/desktop-wallpaper-telegram-for-telegram.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
 
 }
 
@@ -197,15 +203,18 @@ a {
   display: flex;
   margin-top: 10px;
   justify-content: space-evenly;
-  width: 65vw;
+  width: 70vw;
+  height: 100px;
+  padding: 10px;
 }
 
 input[type="text"] {
-  
+  height: 50px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  
   outline: none;
  
 }

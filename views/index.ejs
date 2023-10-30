@@ -111,17 +111,17 @@
       document.querySelector('.messages').innerHTML += ` <div class="msg incomingMessage">
           <div class="username">${messagePacket.username}</div>
           <div class="data"> ${messagePacket.msg} </div>
-          <div class="date"> ${messagePacket.time}</div>
+          <sub class="time" >${messagePacket.time}</sub>
         </div>`
     }
     const now = new Date();
 const hours = now.getHours().toString().padStart(2, '0'); // Ensure two digits
 const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digits
-    function outgoingMessage(msg) {
+    function outgoingMessage(msg,messagePacket) {
       document.querySelector('.messages').innerHTML += ` <div class="msg outgoingMessage">
           <div class="username">You</div>
           <div class="data"> ${msg} </div>
-          <div class="date"> ${hours}:${minutes}</div>
+          <sub class="time" > ${messagePacket.time}</sub>
         </div>`
 
     }
@@ -131,20 +131,26 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     const currentUserObj = JSON.parse(user);
     function sendMessage() {
       const username = currentUserObj.name;
-      console.log('Username:', username);
-      const msg = document.querySelector('#message-input').value
-      const messagePacket = {
+    console.log('Username:', username);
+    const msg = document.querySelector('#message-input').value;
+
+    // Calculate the current time when sending the message
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0'); // Ensure two digits
+    const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digits
+
+    const messagePacket = {
         username: username,
         msg: msg,
         roomName: roomName,
         password: password,
-        time:`${hours}:${minutes}`,
-        // pvtChatRoom:pvtChatRoom,
-        // pvtChatPassword:pvtPass
-      }
-      console.log(messagePacket.roomName)
-      if(curr){
-        outgoingMessage(msg)
+        time: `${hours}:${minutes}`
+    }
+if(curr){
+    outgoingMessage(msg, messagePacket); // Display the message
+
+    // Clear the input field or perform any other necessary actions
+    document.querySelector('#message-input').value = '';
       socket.emit('sony', messagePacket)
       }
 
@@ -202,8 +208,10 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     document.querySelector('.messages').innerHTML += `
         <div class="msg incomingMessage">
             <div class="username">${data.username} Joined the room</div>
+          <sub class='time'>${currpacket.time}<sub>
         </div>
     `;
+   
 });
 
   // socket.on('userLeftRoom',(data)=>{

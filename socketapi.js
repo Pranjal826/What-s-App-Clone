@@ -30,7 +30,8 @@ io.on("connection", function (socket) {
             
             // Emit a message to the room to inform others that the current user has joined
             socket.to(data.roomName).emit('userJoinedMsg', {
-                username: data.username
+                username: data.username,
+                time:data.time
             });
     
             console.log(`User ${data.username} joined room '${data.roomName}'`);
