@@ -128,9 +128,8 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     const user = '<%- JSON.stringify(currentuser) %>';
     console.log('User object:', user);
     const curr = user;
-  
+    const currentUserObj = JSON.parse(user);
     function sendMessage() {
-      const currentUserObj = JSON.parse(user);
       const username = currentUserObj.name;
       console.log('Username:', username);
       const msg = document.querySelector('#message-input').value
@@ -161,6 +160,7 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
        password = prompt('Enter password');
 
       const data = {
+        username:currpacket.username,
         roomName: roomName,
         password: password
       };
@@ -190,7 +190,38 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     socket.on('roomDeleted', (roomName) => {
       alert(`Room '${roomName}' deleted.`);
     });
-  
+    const currjoinedname = currentUserObj.name;
+  // Tell the other users who joined the room
+  const currpacket = {
+        username: currjoinedname,
+        roomName: roomName,
+        password: password,
+        time:`${hours}:${minutes}`,
+      }
+      socket.on('userJoinedMsg', (data) => {
+    document.querySelector('.messages').innerHTML += `
+        <div class="msg incomingMessage">
+            <div class="username">${data.username} Joined the room</div>
+        </div>
+    `;
+});
+
+  // socket.on('userLeftRoom',(data)=>{
+  //   const currjoined = JSON.parse(user);
+  //     const currjoinedname = currentUserObj.name;
+  //     console.log('Username:', currjoinedname);
+  //     const msg = document.querySelector('#message-input').value
+  //     const currpacket = {
+  //       username: currjoinedname,
+  //       roomName: roomName,
+  //       password: password,
+  //       time:`${hours}:${minutes}`,
+  //     }
+
+  //   document.querySelector('.messages').innerHTML += ` <div class="msg incomingMessage">
+  //         <div class="username">${currpacket.username} Left the room</div>`
+  //         console.log(currpacket)
+  // })
     socket.on('roomExists', (roomName) => {
       alert(`Room '${roomName}' already exists.`);
     });
@@ -203,6 +234,7 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
       chatHeading.innerHTML = `You Joined ${roomName}`;
       alert(`Joined room '${roomName}'.`);
     });
+
 
     // Disconnect
     socket.on('disconnect', () => {
