@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const session=require('express-session')
 const userModel=require('../models/userModel')
-
+var upload = require("../utils/multer").single("dp");
 /* GET home page. */
 router.use(session({
   secret: 'secret',
@@ -33,37 +33,39 @@ router.get('/register',(req,res)=>{
 })
 
 router.post('/register', async (req, res) => {
-  const { name, email, password, phone, dp } = req.body;
+  upload(req, res, async function (err) {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error uploading the file.');
+    } else {
+      const { name, email, password, phone } = req.body; // Destructure these variables
+      const existingUser = await userModel.findOne({ $or: [{ email }, { phone }, { name }] });
+      if (existingUser) {
+        res.status(400).send('Email, phone, or username is already in use.');
+      } else {
+        const registration = new userModel({
+          name,
+          email, // Use the destructured variable here
+          password,
+          phone,
+          dp: req.file.filename, // Assuming you are storing the filename in the 'dp' field
+        });
 
-  // Check if the email, phone, and name are already in use
-  const existingUser = await userModel.findOne({ $or: [{ email }, { phone }, { name }] });
-
-  if (existingUser) {
-    // A user with the same email, phone, or name already exists
-    res.status(400).send('Email, phone, or username is already in use.');
-  } else {
-    // Create a new user if no user with the same email, phone, or name exists
-    const registration = new userModel({
-      name,
-      email,
-      password,
-      phone,
-      dp,
-    });
-
-    try {
-      await registration.save();
-      res.send(`
-        <script>
-          alert("Registration Successful");
-          window.location = '/login'; // Redirect to the login page
-        </script>
-      `);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Error saving registration data.');
+        try {
+          await registration.save();
+          res.send(`
+            <script>
+              alert("Registration Successful");
+              window.location = '/login'; // Redirect to the login page
+            </script>
+          `);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send('Error saving registration data.');
+        }
+      }
     }
-  }
+  });
 });
 
 router.get('/login',(req,res)=>{

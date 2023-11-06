@@ -20,7 +20,8 @@
       <div class="user-list">
         <% users.forEach(function(user) { %>
           <div class="user-card" data-user-id="<%= user._id %>" >
-            <img src="<%= user.dp %>" alt="">
+            <img src="/uploads/<%= user.dp %>" alt="" />
+
             <div class="user-details">
               <h2>
                 <%= user.name %>
@@ -41,7 +42,7 @@
       </div>
       <div class="input">
       <input type="text" id="message-input" placeholder="Enter Message" class="animate__animated animate__bounceInLeft">
-<button class="button-89" role="button" onclick="sendMessage()">Send</button>
+<button class="paper-plane" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
 <button class="button-86" role="button" onclick="joinRoom()">Join Room</button>
 
         <button class="button-60" role="button" onclick="createRoom()">

@@ -55,7 +55,9 @@ body {
     outline: none;
     border-bottom: 1px solid white;
   }
-  
+  input:focus{
+    background-color: transparent;
+  }
   button {
     background-color: #08df6ccb;
     color: #fff;
