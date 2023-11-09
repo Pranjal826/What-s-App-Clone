@@ -1,32 +1,32 @@
-const mongoose=require('mongoose')
-// Create schema
-const userSchema=new mongoose.Schema({
-    name:{
-        type:String,
-        unique:true
+const mongoose = require('mongoose');
+const plm = require('passport-local-mongoose');
+
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+  },
+  email: {
+    type: String,
+    unique: true,
+  },
+  password: {
+    type: String,
+    minlength: 6,
+    validate: {
+      validator: function (password) {
+        return /[A-Z]/.test(password);
+      },
+      message: 'Password must contain at least one uppercase letter',
     },
-    email:{
-        type:String,
-        unique:true
-    },
-    password:{
-        type: String,
-        required: true, 
-        minlength: 6,  
-        validate: {
-            validator: function (password) {
-                return /[A-Z]/.test(password);
-            },
-            message: 'Password must contain at least one uppercase letter'
-        }
-    },
-    dp:String,
-    phone:{
-        type:Number,
-        unique:true
-    },
-    })
-// Create model
-const User=mongoose.model('User',userSchema)
-// Export model
-module.exports=User
+  },
+  dp: String,
+  phone: {
+    type: Number,
+    unique: true,
+  },
+});
+
+userSchema.plugin(plm);
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
