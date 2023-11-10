@@ -14,15 +14,19 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     validate: {
       validator: function (password) {
-        return /[A-Z]/.test(password);
+        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/.test(password);
       },
-      message: 'Password must contain at least one uppercase letter',
+      message: 'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*). Minimum length is 6 characters.',
     },
   },
   dp: String,
   phone: {
     type: Number,
     unique: true,
+  },
+  resetPasswordOtp: {
+    type: Number,
+    default: -1,
   },
 });
 

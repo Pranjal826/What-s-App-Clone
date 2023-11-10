@@ -9,6 +9,8 @@ const logoutRoutes=require('./routes/logout')
 const registerRoutes=require('./routes/register')
 const profileRoutes=require('./routes/profile')
 const deleteRoutes=require('./routes/delete')
+const forgetRoutes=require('./routes/forget')
+const sendMail=require('./routes/sendmail')
 const flash = require('connect-flash');
 
 // db connected
@@ -53,7 +55,8 @@ app.use("/", logoutRoutes);
 app.use("/", registerRoutes);
 app.use("/", profileRoutes);
 app.use("/", deleteRoutes);
-
+app.use("/", forgetRoutes);
+app.use("/", sendMail);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
