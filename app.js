@@ -4,6 +4,12 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const loginRoutes=require('./routes/login')
+const logoutRoutes=require('./routes/logout')
+const registerRoutes=require('./routes/register')
+const profileRoutes=require('./routes/profile')
+const deleteRoutes=require('./routes/delete')
+const flash = require('connect-flash');
 
 // db connected
 require("./models/config");
@@ -35,12 +41,18 @@ app.use(
         secret: "asdhbcfkjf",
     })
 );
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use("/", indexRouter);
+app.use("/", loginRoutes);
+app.use("/", logoutRoutes);
+app.use("/", registerRoutes);
+app.use("/", profileRoutes);
+app.use("/", deleteRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

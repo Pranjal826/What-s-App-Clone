@@ -1,5 +1,4 @@
 <%- include('./partials/header') %>
-
   <div class="whatsapp-layout">
 
     <div class="left-sidebar">
@@ -24,7 +23,7 @@
 
             <div class="user-details">
               <h2>
-                <%= user.name %>
+                <%= user.username %>
               </h2>
             </div>
           </div>
@@ -55,10 +54,10 @@
       </div>
     </div>
   </div>
+</script>
   <script src="/socket.io/socket.io.js"></script>
   <!-- ... Your existing HTML code ... -->
   <script>
-    // Search user
     const searchBtn = document.querySelector('#search-btn');
     const searchUser = document.querySelector('#search-user');
     const userCards = document.querySelectorAll('.user-card');
@@ -130,8 +129,9 @@ const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure two digi
     console.log('User object:', user);
     const curr = user;
     const currentUserObj = JSON.parse(user);
+    console.log(currentUserObj)
     function sendMessage() {
-      const username = currentUserObj.name;
+      const username = currentUserObj.username;
     console.log('Username:', username);
     const msg = document.querySelector('#message-input').value;
 
@@ -197,7 +197,7 @@ if(curr){
     socket.on('roomDeleted', (roomName) => {
       alert(`Room '${roomName}' deleted.`);
     });
-    const currjoinedname = currentUserObj.name;
+    const currjoinedname = currentUserObj.username;
   // Tell the other users who joined the room
   const currpacket = {
         username: currjoinedname,
